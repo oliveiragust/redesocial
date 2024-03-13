@@ -12,7 +12,7 @@ from flask_bcrypt import check_password_hash, generate_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres+psycopg2://socialnetdb_user:GNVlzNmKOEF3ZLrXHGHaKHKZ9FGXl69B@dpg-cnog73md3nmc73dkrt3g-a/socialnetdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://socialnetdb_user:GNVlzNmKOEF3ZLrXHGHaKHKZ9FGXl69B@dpg-cnog73md3nmc73dkrt3g-a/socialnetdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['SECRET_KEY'] = 'sua_chave_secreta'
