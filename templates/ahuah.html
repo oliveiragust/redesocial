@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="/static/js/scripts.js"></script>
+</head>
+<body class="bg-white grid-cols-3 ">
+
+{#{% include 'content/navbar.html' %}#}
+
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/n32QtoblOvZ
+-->
+<div class="flex h-screen w-full overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div class="flex flex-col w-64 border-r border-gray-200 dark:border-gray-800">
+        <div class="flex flex-col h-full overflow-y-auto">
+            <div class="flex h-14 items-center px-4 border-b border-gray-200 dark:border-gray-800">
+                <a class="flex items-center gap-2 text-lg font-semibold" href="#">
+                    <span class="">@{{ current_user.username }}</span>
+                </a>
+            </div>
+            <div class="flex-1 overflow-y-auto py-4">
+                <nav class="flex flex-col gap-1">
+                    <a class="flex items-center h-9 px-4 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-50" href="#">
+                        Dashboard
+                    </a>
+                    <!-- outros itens do menu -->
+                </nav>
+            </div>
+        </div>
+    </div>
+    <main class="flex-1 flex flex-col min-h-0 overflow-y-auto p-4 ">
+        <div class="grid gap-4">
+           <div class=" col-span-2 mx-auto">
+    {% if current_user.is_authenticated %}
+        {% if allow_posting %}
+            <h1 class="text-center font-semibold mt-4"></h1>
+            <form action="/create_post" method="POST" class="mt-4">
+                {{ form.hidden_tag() }}
+
+                <div class="bg-white w-[59%] justify-center border  grid grid-cols-6 gap-2  p-2 text-sm mx-auto">
+                    <div class="col-span-5" id="post-content">
+                        <!-- Adicione a classe "autoresize" para fazer o campo crescer automaticamente -->
+                        {{ form.content(placeholder="Diz aê, " + current_user.username, class="bg-gray-100 text-slate-600 placeholder:text-slate-600 placeholder:opacity-50 border border-slate-200 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-indigo-600 w-full h-[50px]") }}
+                    </div>
+                    <div class="flex items-center col-span-1">
+                        {{ form.submit(class="cursor-pointer bg-gray-100 stroke-slate-600 border border-slate-200 flex justify-center rounded-lg p-2 duration-300 hover:border-indigo-600  focus:stroke-blue-200 focus:bg-blue-400 h-10 w-20")  }}
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    {% else %}
+        <p class="text-center mt-4">Você precisa estar autenticado para postar.</p>
+    {% endif %}
+</div>
+
+{#DAQUI PRA BAIXO SAO OS POSTS#}
+
+
+<div class="flex justify-center">
+    <div class="max-w-screen-md w-full px-4">
+        {% for post in posts | sort(attribute='created_at', reverse=True) %}
+            <div class="flex justify-center">
+                <div class="w-full  border  overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex items-center gap-4">
+                            <div class="rounded-full text-center mt-auto border w-12 h-12">
+                                <h2 class="font-semibold mt-2">{{ post.user.username[:2].upper() }}</h2>
+                            </div>
+                            <div class="space-y-1">
+                                <h3 class="text-lg font-bold">{{ post.user.username }}</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ post.created_at.strftime('%d/%m/%Y') }}</p>
+                            </div>
+                        </div>
+                        <div class="post-content text-base leading-7 mt-2 max-h-[200px] overflow-auto">
+                            <p class="whitespace-pre-line">{{ post.content }}</p>
+                        </div>
+                        <div class="grid gap-4 md:gap-6 mt-4">
+                            <div class="flex items-center space-x-2">
+                                <button onclick="toggleLike('{{ post.id }}')" class="inline-flex items-center hover:text-red-600 hover:border-red-600 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground w-8 h-8">
+                                    <svg id="my-svg-{{ post.id }}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                    </svg>
+                                    <span class="sr-only">Like</span>
+                                </button>
+
+                                <button class="inline-flex items-center hover:text-indigo-600 hover:border-indigo-600 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground w-8 h-8">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path>
+                                    </svg>
+                                    <span class="sr-only">Comment</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

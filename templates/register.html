@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="">
+
+{% include 'content/navbar.html' %}
+   <section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
+    <div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
+      <h1 class="title-font font-medium text-3xl text-gray-900">Bem-vindo!</h1>
+      <p class="leading-relaxed mt-4">Espalhe seus pensamentos com o mundo todo!</p>
+    </div>
+    <div class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+      <h2 class="text-gray-900 text-lg font-bold title-font mb-2">Registre-se</h2>
+        <span class="text-indigo-500 text-sm mb-5"><a class="hover:text-indigo-600 "  href="/login">ou clique aqui para fazer o login.</a></span>
+      <form  method="POST" action="/register">
+        {{ form.hidden_tag() }}
+
+
+    <div class="relative mb-4">
+        {{ form.username.label (class="leading-7 text-sm text-gray-600")}}
+        {{ form.username(class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out") }}
+      </div>
+      <div class="relative mb-4">
+        {{ form.password.label  (class="leading-7 text-sm text-gray-600") }}
+        {{ form.password(id="password", class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out") }}
+      </div>
+      <div class="relative mb-4">
+        {{ form.confirm_password.label (class="leading-7 text-sm text-gray-600") }}
+        {{ form.confirm_password(id="confirm_password", class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out") }}
+      </div>
+      <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">{{ form.submit }}</button>
+        </form>
+         <p class="text-xs text-gray-500 mt-3">Ao clicar em Registrar, você concorda com nossos Termos de Serviço e Política de Privacidade.</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
